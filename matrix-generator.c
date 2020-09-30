@@ -4,14 +4,14 @@
 
 #define REF_ARG_NUMBER 4
 
-double **createMatrix(int);
-void saveMatrix(char*, double **, int);
-void freeMatrix(double **, int);
+int **createMatrix(int);
+void saveMatrix(char*, int **, int);
+void freeMatrix(int **, int);
 
 int main(int argc, char *argv[]){
     int i, j, matrixSize, minValue, maxValue;
     char fileName[10];
-    double **matrix;
+    int **matrix;
    
     if(argc == REF_ARG_NUMBER) {
         matrixSize = atoi(argv[1]);            
@@ -36,10 +36,10 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-double **createMatrix(int size){
-    double **matrix;
+int **createMatrix(int size){
+    int **matrix;
 
-    matrix = (double **) malloc(sizeof(double*) * size);
+    matrix = (int **) malloc(sizeof(int*) * size);
    
     if(matrix == NULL){
         printf("Não há memória\n");
@@ -47,7 +47,7 @@ double **createMatrix(int size){
     }else{
         int i;
         for(i = 0; i < size; i++){
-            matrix[i] = (double *) malloc(sizeof(double) * size);
+            matrix[i] = (int *) malloc(sizeof(int) * size);
             if(matrix[i] == NULL){
                 printf("Memoria insuficiente.\n");
                 exit(1);            
@@ -57,7 +57,7 @@ double **createMatrix(int size){
     return matrix;
 }
 
-void saveMatrix(char* fileName, double **matrix, int matrixSize){
+void saveMatrix(char* fileName, int **matrix, int matrixSize){
     int i, j;    
     FILE *file;    
     file = fopen(fileName, "w");
@@ -69,14 +69,14 @@ void saveMatrix(char* fileName, double **matrix, int matrixSize){
     
     for(i = 0; i < matrixSize; i++){
         for(j = 0; j < matrixSize; j++){
-            fprintf(file, "%f ", matrix[i][j]);
+            fprintf(file, "%d ", matrix[i][j]);
         }
         fprintf(file, "\n");
     }
     fclose(file);
 }
 
-void freeMatrix(double **matrix, int matrixSize){
+void freeMatrix(int **matrix, int matrixSize){
     int i;
     for(i = 0; i < matrixSize; i++){
         free(matrix[i]);
