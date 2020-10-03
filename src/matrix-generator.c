@@ -9,30 +9,32 @@ void saveMatrix(char*, int **, int);
 void freeMatrix(int **, int);
 
 int main(int argc, char *argv[]){
-    int i, j, matrixSize, minValue, maxValue;
-    char fileName[10];
-    int **matrix;
-   
+  
     if(argc == REF_ARG_NUMBER) {
+        char fileName[50];
+        int i, j, matrixSize, minValue, maxValue;
+        
         matrixSize = atoi(argv[1]);            
         minValue = atoi(argv[2]);
         maxValue = (atoi(argv[3]) - minValue);
-
-        matrix = createMatrix(matrixSize);
-        
-        strcpy(fileName, argv[1]);        
+ 
+        int **matrix = createMatrix(matrixSize);
+        strcpy(fileName, "./res/");
+        strcat(fileName, argv[1]);        
         strcat(fileName, ".txt");     
-        
+            
+        printf("Nome do arquivo de saida: %s\n", fileName);
+
         for(i = 0; i < matrixSize; i++){
             for(j = 0; j < matrixSize; j++){
               matrix[i][j] = ((rand() % maxValue)+minValue);    
             }
         }
         saveMatrix(fileName, matrix, matrixSize);
+        freeMatrix(matrix, matrixSize);
     }else{
         printf("Verifique o número de argumentos");        
     }
-    freeMatrix(matrix, matrixSize);
     return 0;
 }
 

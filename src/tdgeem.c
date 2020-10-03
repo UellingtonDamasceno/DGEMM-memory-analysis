@@ -4,32 +4,46 @@
 #include <time.h>
 
 double **createMatrix(int size);
-double **readMatrix(char*, int);
-void freeMatrix(double **, int);
-void dgemm(size_t, double*, double*, double*);
+double **readMatrix(char *, int);
+void freeMatrix(double **, int); 
+void dgemm(size_t, double *, double *, double *);
 
 int main(int argc, char* argv[]){
-	clock_t timer;
-	double **matrix = readMatrix(argv[1], atoi(argv[2]));
-	return 0;
+	clock_t timer_i, timer_f;
+    
+    printf("Nome do arquivo: %s\n", argv[1]);
+    printf("Nome arquivo saida: %s\n", argv[3]);
+    printf("Tamanho matriz: %s\n", argv[2]);
+        
+    int matrixSize = atoi(argv[2]);
+    
+	double **matrixA = readMatrix(argv[1], matrixSize);
+    double **matrixB = readMatrix(argv[1], matrixSize);
+    double **matrixC = createMatrix(matrixSize);
+    printf("Leu tudo\n");
+    dgemm(matrixSize, *matrixA, *matrixB, *matrixC);    
+    printf("Calculou\n");
+    freeMatrix(matrixA, matrixSize);
+    freeMatrix(matrixB, matrixSize);
+    freeMatrix(matrixC, matrixSize);
+	printf("Finalizou com sucesso!\n");
+    return 0;
 }
 
 double **readMatrix(char* fileName, int size){
-	int i, j;
 	FILE *file = fopen(fileName, "r");
-	
+
 	if(file == NULL){
 		printf("Erro na leitura do arquivo.\n");
+        printf("Arquivo: %s\n", fileName);
 		exit(1);
 	}
-
-	double** matrix = createMatrix(size);
+    int i, j;
+	double **matrix = createMatrix(size);
 	for(i = 0; i < size; i++){
 		for(j = 0; j < size; j++){
 			fscanf(file, "%lf ", &matrix[i][j]);
-			printf("%lf ", matrix[i][j]);
 		}
-		printf("\n");
 	}
 	fclose(file);
 	return matrix;
@@ -68,7 +82,7 @@ void dgemm (size_t n, double* A, double* B, double* C) {
 	for (size_t i = 0; i < n; ++i) {
 		for(size_t j = 0; j < n; ++j) {
 			double cij = 0;
-			for (size_t k=0; k < n; k++) {
+			for (size_t k = 0; k < n; k++) {
 				cij += A[i+k*n] * B[k+j*n]; /*cij += A[i][k]*B[k][j]*/
 			}
 			C[i+j*n] = cij; /* C[i][j] = cij*/
