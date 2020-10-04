@@ -5,18 +5,17 @@
 
 double **createMatrix(int size);
 double **readMatrix(char *, int);
-void freeMatrix(double **, int); 
-void dgemm(size_t, double *, double *, double *);
+void freeMatrix(double **, int);
+void do_block (int, int, int, int, double *, double *, double *);
+void dgemm_blocked(size_t, double *, double *, double *);
 void saveResult(char *, int, double);
+
+int BLOCKSIZE;
 
 int main(int argc, char* argv[]){
 	clock_t timer_i, timer_f;
     double result;    
-    
-//    printf("Nome do arquivo: %s\n", argv[1]);
-//    printf("Nome arquivo saida: %s\n", argv[3]);
-//    printf("Tamanho matriz: %s\n", argv[2]);
-//        
+    BLOCKSIZE = atoi(argv[4]);
     int matrixSize = atoi(argv[2]);
     
 	double **matrixA = readMatrix(argv[1], matrixSize);
@@ -24,7 +23,7 @@ int main(int argc, char* argv[]){
     double **matrixC = createMatrix(matrixSize);
     
     timer_i = clock();
-    dgemm(matrixSize, *matrixA, *matrixB, *matrixC);    
+    dgemm_blocked(matrixSize, *matrixA, *matrixB, *matrixC);    
     timer_f = clock() - timer_i;
     result = ((double)timer_f)/((CLOCKS_PER_SEC/1000));
 
@@ -32,7 +31,6 @@ int main(int argc, char* argv[]){
 //    freeMatrix(matrixA, matrixSize);
 //    freeMatrix(matrixB, matrixSize);
 //    freeMatrix(matrixC, matrixSize);
-
     return 0;
 }
 
@@ -44,7 +42,7 @@ void saveResult(char* fileName, int matrixSize, double result){
         printf("Arquivo: %s\n", fileName);
 		exit(1);
 	}else{
-        fprintf(file, "%d,%.2lf,0\n", matrixSize, result);
+        fprintf(file, "%d,%.2lf,%d\n", matrixSize, result, BLOCKSIZE);
         fclose(file); 
     }
 }
@@ -91,21 +89,33 @@ double **createMatrix(int size){
 
 void freeMatrix(double **matrix, int matrixSize){
     int i;
-
     for(i = 0; i < matrixSize; i++){
-        free(matrix[i]);
+        if(matrix[i] != NULL)
+            free(matrix[i]);
     }
-    free(matrix);
+    if(matrix != NULL){
+        free(matrix);
+    }
 }
 
-void dgemm (size_t n, double* A, double* B, double* C) {
-	for (size_t i = 0; i < n; ++i) {
-		for(size_t j = 0; j < n; ++j) {
+void do_block (int n, int si, int sj, int sk, double *A, double *B, double *C) {
+	for (int i = si; i < si+BLOCKSIZE; ++i) {
+		for (int j = sj; j < sj+BLOCKSIZE; ++j) {
 			double cij = 0;
-			for (size_t k = 0; k < n; k++) {
-				cij += A[i+k*n] * B[k+j*n]; /*cij += A[i][k]*B[k][j]*/
+			for(int k = sk; k < sk+BLOCKSIZE; k++) {
+				cij += A[i+k*n] * B[k+j*n]; /* cij += A[i][k]*B[k][j] */
 			}
-			C[i+j*n] = cij; /* C[i][j] = cij*/
+			C[i+j*n] = cij; /* C[i][j] = cij */
+		}
+	}
+}
+
+void dgemm_blocked (size_t n, double* A, double* B, double* C) {
+	for (int sj = 0; sj < n; sj += BLOCKSIZE) {
+		for (int si = 0; si < n; si += BLOCKSIZE) {
+			for (int sk = 0; sk < n; sk += BLOCKSIZE) {
+				do_block(n, si, sj, sk, A, B, C);
+			}	
 		}
 	}
 }

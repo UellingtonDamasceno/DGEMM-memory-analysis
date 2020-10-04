@@ -22,8 +22,6 @@ int main(int argc, char *argv[]){
         strcpy(fileName, "./res/");
         strcat(fileName, argv[1]);        
         strcat(fileName, ".txt");     
-            
-        printf("Nome do arquivo de saida: %s\n", fileName);
 
         for(i = 0; i < matrixSize; i++){
             for(j = 0; j < matrixSize; j++){
