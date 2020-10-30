@@ -1,17 +1,23 @@
 # Influência da organização de memória no desempenho de um sistema.
 
-A análise e execução desse experimento é uma [avaliação](https://github.com/UellingtonDamasceno/DGEMM-memory-analysis/blob/main/info/description.pdf) da disciplina arquitetura de compuadores (TEC402).
+A análise e execução desse experimento é uma [avaliação](https://github.com/UellingtonDamasceno/DGEMM-memory-analysis/blob/main/info/description.pdf) da disciplina arquitetura de compuadores (TEC402). 
+
+Esse``README`` apresenta os passos e quais critérios foram 
+considerados para a execução de um comparativo entre dois algoritmos de
+multiplicação de matrizes quadradas povoadas com valores de ponto flutuante
+a fim de verificar os impactos gerados pelo padrão de acesso a memória. 
+
 
 ## Sumário
 - [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
   - [Software](#software)
   - [Hardware](#hardware)
 - [Experimentos](#experimentos)
-  - [Códigos fonte](#codigos-fonte)
-  - [Redução de ruído](#reducao-de-ruido)
+  - [Códigos fonte](#códigos-fonte)
+  - [Redução de ruído](#redução-de-ruído)
   - [Complexidade dos algoritmos](#complexidade-dos-algoritmos)
 - [Resultados](#resultados)
-- [Conclusão](#conclusao)
+- [Conclusão](#conclusão)
 
 ## Ambiente de desenvolvimento
 Os experimentos foram executados em um ambiente de baseado em linux com as
