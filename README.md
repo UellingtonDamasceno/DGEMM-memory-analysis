@@ -112,4 +112,13 @@ equção 2 * N^3. Dessa forma temos a seguinte tabela:
 |1920|14.155.776.000|
 
 ## Resultados
+A tabela abaixo expõe os resultados que foram gerados ao executar os 
+experimentos seguinto o protocolo apresentado [anteriormente]
+(#experimentos). Por questão de visualização, os algoritmos foram 
+renomeados da seguite forma: **DGEMM** corresponde ao algoritmo de 
+multiplicação sem otimização; **DGEMM B32** e **DGEMM B64** correspondem 
+ao algoritmo com otimização de blocos de 32 e 64 de tamanho, 
+respectivamente.
+
+
 ## Conclusão
