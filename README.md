@@ -6,8 +6,9 @@ da disciplina arquitetura de compuadores (TEC402).
 
 Esse``README`` apresenta os passos e quais critérios foram 
 considerados para a execução de um comparativo entre dois algoritmos de
-multiplicação de matrizes quadradas povoadas com valores de ponto flutuante
-a fim de verificar os impactos gerados pelo padrão de acesso a memória. 
+multiplicação de [matrizes quadradas](https://github.com/UellingtonDamasceno/DGEMM-memory-analysis/tree/main/res)
+povoadas com valores de ponto flutuante a fim de verificar os impactos
+gerados pelo padrão de acesso a memória. 
 
 
 ## Sumário
@@ -23,7 +24,7 @@ a fim de verificar os impactos gerados pelo padrão de acesso a memória.
 
 ## Ambiente de desenvolvimento
 Os experimentos foram executados em um ambiente de baseado em linux com as
-seguintes configurações de "software" e "hardware":
+seguintes configurações de ***software*** e ***hardware***:
 
 ### Software
   - **Distro:** Linux Mint 19.3 Tricia XFCE
@@ -32,7 +33,6 @@ seguintes configurações de "software" e "hardware":
 
 
 ### Hardware
-
 O processador utilizado nos experimentos possui as seguintes configurações:
 
   - **Processador:** Intel Core i3-4005U
@@ -79,11 +79,27 @@ os experimentos em um ambiente com 77 *tasks* que consumiam um total de 133 MB d
 ### Complexidade dos algoritmos
 Um algoritmo de multiplicação de matrizes sem otimização consiste em três *loops* 
 "for" aninhados. Onde cada *loop* executa N vezes, sendo N o tamanho da matriz.
-No *loop* mais interno, é feit uma operação de adição e outra de multiplicação. 
+No *loop* mais interno, é feita uma operação de adição e outra de multiplicação. 
 Por tanto é possível afirmar que a complexidade de execução desse algoritmo é O(n^3) 
 operações de ponto flutuante.
 
-Considerando o fato de que cda execução do laçõ mais interno duas 
+O algoritmo abaixo equivale a uma implementação ingenua do algoritmo de multiplicação de 
+matrizes. 
+
+```c
+for (int i = 0; i < n; ++i) {
+  for(int j = 0; j < n; ++j) {
+    double cij = 0;
+    for (int k = 0; k < n; k++) {
+      cij += A[i+k*n] * B[k+j*n]; /*cij += A[i][k]*B[k][j]*/
+    }
+    C[i+j*n] = cij; /* C[i][j] = cij*/
+  }
+}
+
+```
+
+Considerando o fato de que cda execução do laço mais interno duas 
 operações são realizadas, é possível afirmar que a quantidade de operações 
 de ponto flutuante necessária para multiplicar cada matriz é dada pela 
 equção 2 * N^3. Dessa forma temos a seguinte tabela:
