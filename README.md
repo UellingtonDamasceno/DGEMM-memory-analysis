@@ -31,7 +31,20 @@ O processador utilizado nos experimentos possui as seguintes configurações:
   - Largura do dado: 64 bits
 
 O processador utilizado possui uma interface controladora de memória com 
-uma capacidade máxima de gerenciamento de até 16 GB. 
+uma capacidade máxima de gerenciamento de até 16 GB. capaz de ler ou escrever dados a uma taxa máxima de 25.6 GB/s. Para auxiliar o desempenho a memória está organizada da seguinte maneira:
+
+  - Cache
+    - L1i: 32 KB de cache para instruções.
+    - L1d: 32 KB de cache para dados.
+    - L2: 2 blocos de 256 KB de cache associativos de 8 vias.
+    - L3: Cache compartilhado associativo de 3 MB com 12 vias.
+  - Memória RAM
+    - Tamanho: 4 GB
+    - Tipo: DDR3L
+    - Tecnologia: DRAM
+    - Frequência: 1600 MHz
+    
+O barramento utilizado para fazer a comunicação entre os componentes possui uma valocidade de 5 GT/s.
 
 ## Experimentos
 ### Códigos fonte
