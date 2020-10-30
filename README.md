@@ -1,5 +1,7 @@
 # Influência da organização de memória no desempenho de um sistema.
 
+A análise e execução desse experimento é uma avaliação da disciplina arquitetura de compuadores (TEC402).
+
 ## Sumário
 - [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
   - [Software](#software)
